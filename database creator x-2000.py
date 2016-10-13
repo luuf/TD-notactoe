@@ -33,6 +33,24 @@ def find_board_id(bräde):
         if compare(bräde,obj.bräde):
             return obj.idnum
     return -1
+def isdead(bräde):
+    if (bräde[0][0] and bräde[0][1] and bräde[0][2]) or (bräde[1][0] and bräde[1][1] and bräde[1][2]) or (bräde[2][0] and bräde[2][1] and bräde[2][2]) or (bräde[0][0] and bräde[1][0] and bräde[2][0]) or (bräde[0][1] and bräde[1][1] and bräde[2][1]) or (bräde[0][2] and bräde[1][2] and bräde[2][2]) or (bräde[0][0] and bräde[1][1] and bräde[2][2]) or (bräde[0][2] and bräde[1][1] and bräde[2][0]):
+        return True
+    else:
+        return False
+def printboard(bräde):
+    string = ""
+    for row in [[bräde[0][2],bräde[1][2],bräde[2][2]],
+                  [bräde[0][1],bräde[1][1],bräde[2][1]],
+                  [bräde[0][0],bräde[1][0],bräde[2][0]]]:
+        for value in row:
+            if value == 1:
+                string += "[X]"
+            if value == 0:
+                string += "[ ]"
+        string += "\n"
+    print(string)
+            
         
         
 Brädeninit = [[[0,0,0],[0,0,0],[0,0,0]],
@@ -94,22 +112,28 @@ Brädeninit = [[[0,0,0],[0,0,0],[0,0,0]],
               [[0,1,1],[0,1,1],[0,1,0]],
               [[0,1,1],[0,1,1],[1,0,0]],
               [[0,1,1],[0,0,0],[0,0,0]],
-              [[0,0,0],[0,0,0],[0,0,0]],
-              [[0,0,0],[0,0,0],[0,0,0]],
-              [[0,0,0],[0,0,0],[0,0,0]]]
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
+              [[1,1,1],[1,1,1],[1,1,1]],
 bräden = []
-for pos,board in enumerate(Brädeninit):
-    bräden.append(bräde(board,pos))
 for obj in bräden:
     for column,columnlist in enumerate(obj.bräde):
         for position,value in enumerate(columnlist):
             if value == 0:
                 copybräde = copy.deepcopy(obj.bräde)
                 copybräde[column][position] = 1
-                idmatch = find_board_id(copybräde)
-                if idmatch != -1:
-                    #print("Lade till pointer till " + str(obj.idnum) + ", som pekar mot " + str(idmatch))
-                    obj.add_pointer(idmatch)
 for obj in bräden:
     print(obj.idnum)
     print("Kan gå till: ")
