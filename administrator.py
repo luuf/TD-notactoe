@@ -67,7 +67,7 @@ def countwins(games):
         if game == 2:
             player2 += 1
     return (player1,player2)
-print(countwins(run_games(100000)))
+print(countwins(run_games(10)))
 
     
         
