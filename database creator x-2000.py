@@ -146,8 +146,10 @@ for obj in bräden:
                     if idmatch != -1:
                         obj.add_pointer(idmatch)
 for obj in bräden:
+    
     print(obj.idnum)
     printboard(obj.bräde)
     print("Kan gå till: ")
     print(obj.pointers)
     print("\n")
+#hej
