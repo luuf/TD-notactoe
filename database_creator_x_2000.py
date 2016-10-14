@@ -6,7 +6,7 @@ class bräde:
         self.bräde = lista
         self.idnum = idnum
     def add_pointer(self,idnum):
-        if idnum not in self.pointers:
+        if idnum not in self.pointers and self.idnum != 12:
             self.pointers.append(idnum)
 def rotate(bräde):
     newboard = [[0,0,0],[0,0,0],[0,0,0]]
