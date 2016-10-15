@@ -45,4 +45,3 @@ def game_win(win):
 def end():
     storedata()
 db = getdata() #db[0][0][0] ger värdet för state(0,0,0)
-db = resetdata()
