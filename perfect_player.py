@@ -3,7 +3,7 @@ import collections as c
 import random
 def choice(states):
     for state in states:
-        if getset(get_q_string(state)) == bag('cc') or getset(get_q_string(state)) ==  bag('bc') or getset(get_q_string(state)) ==  bag('bb') or getset(get_q_string(state)) ==  bag('a'):
+        if getset(get_q_string(state)) in p_set:
             return state
     return random.choice(states)  
 def end():
@@ -61,6 +61,7 @@ monoid = [bag(''),bag('a'),bag('b'),bag('ab'),
           bag('bc'),bag('abc'),bag('cc'),bag('acc'),
           bag('bcc'),bag('abcc'),bag('d'),bag('ad'),
           bag('bd'),bag('abd')]
+p_set = [bag('cc'),bag('bc'),bag('bb'),bag('a')]
 q_values = ['c','','','cc','ad','b','b',
                 'b','a','a','b','a','','b','ab',
                 'd','a','d','d','a','ab','a',
