@@ -1,7 +1,7 @@
 '''Perfect Player'''
 import collections as c
 import random
-def choice(states):
+def choice(states,current):
     for state in states:
         if getset(get_q_string(state)) in p_set:
             return state
