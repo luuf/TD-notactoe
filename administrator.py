@@ -1,17 +1,21 @@
 import database_creator_x_2000 as databaser
 db = databaser.generate_db()
 
-i = input('p1,p2: t för ai, r för random, h för human \n')
+i = input('p1,p2: t för ai, r för random, h för human, p för perfect \n')
 if i[0] == 't':
     import td_learning as p1
 elif i[0] == 'h':
     import human_player as p1
+elif i[0] == 'p':
+    import perfect_player as p1
 else:
     import random_player as p1
 if i[-1] == 't':
     import td_learning as p2
 elif i[-1] == 'h':
     import human_player as p2
+elif i[-1] == 'p':
+    import perfect_player as p2
 else:
     import random_player as p2
 '''Administratörfil. Generear listan på non-isomorphic bräden
