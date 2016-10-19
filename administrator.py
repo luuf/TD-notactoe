@@ -1,7 +1,7 @@
 import database_creator_x_2000 as databaser
 db = databaser.generate_db()
+import perfect_player as p2
 import td_learning as p1
-import random_player as p2
 import random
 '''Administratörfil. Generear listan på non-isomorphic bräden
 och låter olika spelare välja drag'''
@@ -67,7 +67,7 @@ def countwins(games):
         if game == 2:
             player2 += 1
     return (player1,player2)
-print(countwins(run_games(10000)))
+print(countwins(run_games(1000)))
 
     
         
