@@ -1,7 +1,7 @@
 import database_creator_x_2000 as databaser
 db = databaser.generate_db()
 import td_learning as p2
-import random_player as p1
+import human_player as p1
 import random
 '''Administratörfil. Generear listan på non-isomorphic bräden
 och låter olika spelare välja drag'''

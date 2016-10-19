@@ -11,16 +11,16 @@ def boards_to_state(board):
         state.append(databaser.find_board_id([board[0][i],board[1][i],board[2][i]],db))
     return tuple(sorted(state))
 def state_to_board(state,boards):
-    for row in boards:
-        for sub_row in row:
-            for position in sub_row:
+    if state == (0,0,0):
+        return boards
+    for x,row in enumerate(boards):
+        for y,sub_row in enumerate(row):
+            for z,position in enumerate(sub_row):
                 if position == 0:
-                    position = 1
-                    print(state)
-                    print(boards_to_state(boards))
+                    boards[x][y][z] = 1
                     if boards_to_state(boards) == state:
                         return boards
-                    position = 0
+                    boards[x][y][z] = 0
     print("ERRRORORORORRO")
 def printboards(boards):
     string = ""
@@ -40,10 +40,14 @@ def choice(lista,current):
     current_boards = state_to_board(current,current_boards)
     printboards(current_boards)
     i = input("bräde,rad,kolumn")
-    ilist = i.split(',')
-    current_boards[i[1]][i[0]][i[2]] = 1
+    i = i.split(',')
+    current_boards[int(i[1])-1][int(i[0])-1][int(i[2])-1] = 1
+    printboards(current_boards)
     return boards_to_state(current_boards)
 def end():
     pass
 def game_win(win):
-    pass
+    if win:
+        print('You win!')
+    else:
+        print('You lose!')
