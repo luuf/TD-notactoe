@@ -1,6 +1,6 @@
 '''slumpmässig'''
 import random
-def choice(lista):
+def choice(lista,current):
     return random.choice(lista)
 def end():
     pass

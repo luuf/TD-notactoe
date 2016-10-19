@@ -1,8 +1,19 @@
 import database_creator_x_2000 as databaser
 db = databaser.generate_db()
-import td_learning as p1
-import random_player as p2
-import random
+
+i = input('p1,p2: t för ai, r för random, h för human \n')
+if i[0] == 't':
+    import td_learning as p1
+elif i[0] == 'h':
+    import human_player as p1
+else:
+    import random_player as p1
+if i[-1] == 't':
+    import td_learning as p2
+elif i[-1] == 'h':
+    import human_player as p2
+else:
+    import random_player as p2
 '''Administratörfil. Generear listan på non-isomorphic bräden
 och låter olika spelare välja drag'''
 
@@ -39,11 +50,11 @@ def run_game():
     current = (0,0,0)
     winner = 1
     while current != (12,12,12):
-        current = p1.choice(find_afterstates(current))
+        current = p1.choice(find_afterstates(current),current)
         if current == (12,12,12):
             winner = 2
             break
-        current = p2.choice(find_afterstates(current))
+        current = p2.choice(find_afterstates(current),current)
     if winner == 1:
         p1.game_win(True)
         p2.game_win(False)
@@ -67,7 +78,7 @@ def countwins(games):
         if game == 2:
             player2 += 1
     return (player1,player2)
-print(countwins(run_games(10000)))
+print(countwins(run_games(1000)))
 
     
         

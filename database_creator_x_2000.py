@@ -29,6 +29,8 @@ def compare(bräde1,bräde2):
         b1 = mirror(b1)
     return False
 def find_board_id(bräde,boards):
+    if isdead(bräde):
+        return 12
     for obj in boards:
         if compare(bräde,obj.bräde):
             return obj.idnum
@@ -50,7 +52,6 @@ def printboard(bräde):
                 string += "[ ]"
         string += "\n"
     print(string)
-            
 def generate_db():               
     Brädeninit = [[[0,0,0],[0,0,0],[0,0,0]],
                   [[0,0,1],[0,0,0],[0,0,0]],

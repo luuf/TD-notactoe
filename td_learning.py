@@ -20,7 +20,7 @@ def pullstate(state):
 def setstate(state,value):
     db[state[0]][state[1]][state[2]] = value
     
-def choice(states):
+def choice(states,current):
     if finalpolicy:
         return max(states, key=lambda x:db[x[0]][x[1]][x[2]])
     else:
