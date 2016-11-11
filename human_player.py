@@ -45,10 +45,13 @@ def get_input():
             print("0 är inte en giltig siffra, välj 1,2 eller 3")
             continue
         try:
-            if current_boards[int(i[0])-1][int(i[1])-1][int(i[2])-1] == 0 and boards_to_state(current_boards,sort = False)[int(i[0])-1] != 12:
+            if current_boards[int(i[1])-1][int(i[0])-1][int(i[2])-1] == 0 and boards_to_state(current_boards,sort = False)[int(i[0])-1] != 12:
                 not_correct = False
             else:
                 print("Plats ej giltig, försök igen") 
+                print(current_boards[int(i[1])-1][int(i[0])-1][int(i[2])-1])
+                print(boards_to_state(current_boards,sort = False)[int(i[0])-1])
+                print(i)
         except (TypeError, ValueError):
             print("Felaktig formattering - det ska vara ex. 1,1,3 för bräde 1, rad 1, kolumn 3 - försök igen. ")
         except IndexError:
