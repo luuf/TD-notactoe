@@ -5,7 +5,7 @@ import random
 l = 0.5
 temp = 0.2
 playedmoves = []
-finalpolicy = False
+policy = "learning"
 def getdata():
     try:
         return pickle.load(open("db.dat","rb"))
@@ -21,7 +21,7 @@ def setstate(state,value):
     db[state[0]][state[1]][state[2]] = value
     
 def choice(states,current):
-    if finalpolicy:
+    if policy == "final":
         return max(states, key=lambda x:db[x[0]][x[1]][x[2]])
     else:
         global playedmoves
@@ -34,11 +34,12 @@ def choice(states,current):
             if score/sumscores < num:
                 num = num - score/sumscores
             else:
-                playedmoves.append(states[index])
+                if policy == "learning":
+                    playedmoves.append(states[index])
                 return states[index]
 
 def game_win(win):
-    if not finalpolicy:
+    if policy == "learning":
         global playedmoves
         if win:
             previous_score = 1

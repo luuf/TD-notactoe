@@ -1,7 +1,7 @@
 import database_creator_x_2000 as databaser
+import pylab as plab
 db = databaser.generate_db()
-
-i = input('p1,p2: t för ai, r för random, h för human, p för perfect \n')
+i = input('p1p2: t för ai, r för random, h för human, p för perfect \n')
 if i[0] == 't':
     import td_learning as p1
 elif i[0] == 'h':
@@ -82,7 +82,51 @@ def countwins(games):
         if game == 2:
             player2 += 1
     return (player1,player2)
-print(countwins(run_games(1000)))
+def plot_winrate(stats,x_size = 1200,y_size = 800):
+    x = [0,len(stats)]
+    y = [0.9,0.9]
+    plab.figure(figsize=(x_size/128,y_size/128), dpi = 128)
+    plab.plot(stats)
+    plab.plot(x,y)
+    plab.xlabel('Learning Games')
+    plab.ylabel('Winrate')
+    plab.title('Learning Results')
+    plab.savefig("LearningGraph.png")
+    axes = plab.gca()
+    axes.set_ylim([0,1])
+    plab.show()
+def plottdlearning(games,player,learning_games):
+    if player == 1:
+        p1.db = p1.resetdata()
+        p1.storedata()
+        win_rates=[]
+        for i in range(learning_games):
+            wins = 0
+            p1.policy = "blank"
+            for j in range(games):
+                if run_game() == 1:
+                    wins += 1
+            win_rates.append(wins/games)
+            p1.policy = "learning"
+            run_game()
+    if player == 2:
+        p2.db = p2.resetdata()
+        p2.storedata()
+        win_rates=[]
+        for i in range(learning_games):
+            wins = 0
+            p2.policy = "blank"
+            for j in range(games-1):
+                if run_game() == 2:
+                    wins += 1
+            win_rates.append(wins/games)
+            p2.policy = "learning"
+            run_game()
+    plot_winrate(win_rates)
+    
+    
+        
+#print(countwins(run_games(1000)))
 
     
         
