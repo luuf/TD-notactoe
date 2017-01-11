@@ -1,5 +1,6 @@
 import database_creator_x_2000 as databaser
 import pylab as plab
+import pickle
 db = databaser.generate_db()
 i = input('p1p2: t för ai, r för random, h för human, p för perfect \n')
 if i[0] == 't':
@@ -49,7 +50,10 @@ def find_afterstates(state):
             else:
                 afterstates.append((state[0],pointer,state[1]))
     return afterstates
-
+def printstate(state):
+    databaser.printboard(db[state[0]].bräde)
+    databaser.printboard(db[state[1]].bräde)
+    databaser.printboard(db[state[2]].bräde)
 def run_game():
     current = (0,0,0)
     winner = 1
@@ -82,21 +86,40 @@ def countwins(games):
         if game == 2:
             player2 += 1
     return (player1,player2)
-def plot_winrate(stats,x_size = 1200,y_size = 800):
-    x = [0,len(stats)]
+def plot_winrate(stats,x_size = 1200,y_size = 800,xlabelmod = 1,x_start = 0):
+    for statlist in stats:
+        if len(statlist) != len(stats[0]):
+            print("Alla listor måste vara lika långa!!")
+            return 0
+    x = [0+x_start,len(stats[0])*xlabelmod+x_start-1]
     y = [0.9,0.9]
+    x_list = []
+    for number in range(len(stats[0])):
+        x_list.append(x_start + number*xlabelmod)
     plab.figure(figsize=(x_size/128,y_size/128), dpi = 128)
-    plab.plot(stats)
+    for statlist in stats:
+        plab.plot(x_list,statlist)
     plab.plot(x,y)
     plab.xlabel('Learning Games')
     plab.ylabel('Winrate')
     plab.title('Learning Results')
-    plab.savefig("LearningGraph.png")
     axes = plab.gca()
     axes.set_ylim([0,1])
+    plab.savefig("LearningGraph.png")
     plab.show()
-def plottdlearning(games,player,learning_games):
+def learning_session(games,player,learning_games,x_size = 1200,temp = 0.05,track = [],passivetrack = True):
+    trackedstates = []
+    changes = []
+    for state in track:
+        trackedstates.append([state,[]])
+    if learning_games > x_size:
+        if learning_games%x_size != 0:
+            print("learning games needs to be multiple of " + str(x_size))
+            return 0
+        else:
+            games_per_x = learning_games//x_size
     if player == 1:
+        p1.temp = temp
         p1.db = p1.resetdata()
         p1.storedata()
         win_rates=[]
@@ -107,9 +130,17 @@ def plottdlearning(games,player,learning_games):
                 if run_game() == 1:
                     wins += 1
             win_rates.append(wins/games)
-            p1.policy = "learning"
+            if passivetrack:
+                p1.policy = "tracking"
+            else:
+                p1.policy = "learning"
             run_game()
+            if passivetrack:
+                changes.append(p1.getpmove())
+            for index,state in enumerate(track):
+                trackedstates[index][1].append(p1.pullstate(state))
     if player == 2:
+        p2.temp = temp
         p2.db = p2.resetdata()
         p2.storedata()
         win_rates=[]
@@ -120,13 +151,42 @@ def plottdlearning(games,player,learning_games):
                 if run_game() == 2:
                     wins += 1
             win_rates.append(wins/games)
-            p2.policy = "learning"
+            if passivetrack:
+                p1.policy = "tracking"
+            else:
+                p1.policy = "learning"
             run_game()
-    plot_winrate(win_rates)
-    
-    
-        
-#print(countwins(run_games(1000)))
-
-    
+            if passivetrack:
+                changes.append(p2.getpmove())
+            for index,state in enumerate(track):
+                trackedstates[index][1].append(p1.pullstate(state))
+    if learning_games > x_size:
+        win_rates_adjusted = []
+        for index in range(0,len(win_rates),games_per_x):
+            tot = 0
+            for sak in range(games_per_x):
+                tot += win_rates[index + sak]
+            win_rates_adjusted.append(tot/games_per_x)
+    else:
+        win_rates_adjusted = win_rates
+        games_per_x = 1
+    return (win_rates_adjusted,games_per_x,trackedstates,changes)
+def plot_learning(games,player,learning_games,x = 1200,temp = 0.05):
+    """Kör en learning_session och plottar den"""
+    learning_tuple = learning_session(games,player,learning_games,x,temp = temp)
+    stat = learning_tuple[0]
+    games_per_x = learning_tuple[1]
+    plot_winrate([stat],x_size = x,xlabelmod = games_per_x)
+def average_runs(runs,games,player,learning_games,x_size = 1200,temp = 0.05):
+    values = learning_session(games,player,learning_games,x_size,temp, passivetrack = False)
+    games_per_x = values[1]
+    averaged_list = plab.array(values[0])
+    for run in range(runs-1):
+        averaged_list += plab.array(learning_session(games,player,learning_games,x_size,temp, passivetrack = False)[0])
+    averaged_list = averaged_list/(runs)
+    return (averaged_list,games_per_x)
+def picklestats(stats,name):
+    pickle.dump(stats,open(name,"wb"),pickle.HIGHEST_PROTOCOL)
+def getstats(name):
+    return pickle.load(open(name,"rb"))
         

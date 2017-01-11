@@ -2,8 +2,9 @@
 import pickle
 import math
 import random
+import copy
 l = 0.5
-temp = 0.2
+temp = 0.01
 playedmoves = []
 policy = "learning"
 def getdata():
@@ -34,21 +35,29 @@ def choice(states,current):
             if score/sumscores < num:
                 num = num - score/sumscores
             else:
-                if policy == "learning":
+                if policy == "learning" or policy == "tracking":
                     playedmoves.append(states[index])
                 return states[index]
-
+def getpmove():
+    return savemoves
+    
 def game_win(win):
-    if policy == "learning":
+    if policy == "learning" or policy == "tracking":
         global playedmoves
+        if policy == "tracking":
+            global savemoves
+            savemoves = [pullstate(i) for i in playedmoves]
         if win:
-            previous_score = 1
+            score = 1
         else:
-            previous_score = 0
+            score = 0
         for state in reversed(playedmoves):
             v = pullstate(state)
-            previous_score = v+l*(previous_score - v)
-            setstate(state,previous_score)
+            score = v+l*(score - v)
+            setstate(state,score)
+        
+        if policy == "tracking":
+            savemoves = [(i,savemoves[n],pullstate(i)) for n,i in enumerate(playedmoves)]
         playedmoves = []
     
 def end():
