@@ -182,6 +182,8 @@ def average_runs(runs,games,player,learning_games,x_size = 1200,temp = 0.05):
     games_per_x = values[1]
     averaged_list = plab.array(values[0])
     for run in range(runs-1):
+        if run%(runs/10) == 0:
+            print(run)
         averaged_list += plab.array(learning_session(games,player,learning_games,x_size,temp, passivetrack = False)[0])
     averaged_list = averaged_list/(runs)
     return (averaged_list,games_per_x)
