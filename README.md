@@ -1,3 +1,3 @@
 # TD-notactoe
 
-eyo jag gör saker i branchen
+This repository contains code written for a high-school project.
